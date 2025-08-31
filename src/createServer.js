@@ -13,7 +13,7 @@ function createServer() {
 
     const { searchParams } = sanitizedUrl;
     const searchParamsKeys = new Set(sanitizedUrl.searchParams.keys());
-    const searchParamsResult = searchParamsKeys.reduce(
+    const searchParamsResult = [...searchParamsKeys].reduce(
       (acc, current) => ({
         ...acc,
         [current]: searchParams.get(current),
