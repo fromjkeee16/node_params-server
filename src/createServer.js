@@ -10,14 +10,16 @@ function createServer() {
       .replace(/\/+/g, '/')
       .split('/')
       .filter(Boolean);
-    const searchParams = new Set(sanitizedUrl.searchParams.keys());
-    const searchParamsResult = {};
 
-    for (const key of searchParams) {
-      const values = sanitizedUrl.searchParams.getAll(key);
-
-      searchParamsResult[key] = values.length > 1 ? values : values[0];
-    }
+    const { searchParams } = sanitizedUrl;
+    const searchParamsKeys = new Set(sanitizedUrl.searchParams.keys());
+    const searchParamsResult = searchParamsKeys.reduce(
+      (acc, current) => ({
+        ...acc,
+        [current]: searchParams.get(current),
+      }),
+      {},
+    );
 
     res.statusCode = 200;
     res.statusMessage = 'OK';
